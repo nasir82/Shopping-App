@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -49,7 +50,7 @@ fun ShoppingTextField(
         value = value, onValueChange = {
             onValueChange(it)
         }, label = {
-            Text(text = label, modifier = Modifier.padding(start = 0.dp))
+            Text(text = label, modifier = Modifier.padding(start = 0.dp), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onBackground)
         }, modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
@@ -79,7 +80,7 @@ fun ShoppingTextField(
         ),
         colors = TextFieldDefaults.colors(
 
-            disabledTextColor = Color.Black,
+            disabledTextColor = MaterialTheme.colorScheme.surface,
             disabledContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
             focusedContainerColor = Color.Transparent

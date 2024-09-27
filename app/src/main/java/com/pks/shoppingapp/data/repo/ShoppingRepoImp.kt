@@ -3,8 +3,8 @@ package com.pks.shoppingapp.data.repo
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.pks.shoppingapp.authentication.domain.model.UserData
 import com.pks.shoppingapp.common.ResultState
-import com.pks.shoppingapp.domain_layer.model.UserData
 import com.pks.shoppingapp.domain_layer.repo.ShoppingRepo
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

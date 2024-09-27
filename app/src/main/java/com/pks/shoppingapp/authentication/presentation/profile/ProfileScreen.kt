@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.ui_layer.screens
+package com.pks.shoppingapp.authentication.presentation.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +42,8 @@ import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.components.ShoppingTextField
 import com.pks.shoppingapp.components.ShoppingTextField2
 import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
+import com.pks.shoppingapp.authentication.presentation.signup.HrSpacer
+import com.pks.shoppingapp.ui_layer.screens.ShoppingAlertDialog
 import com.pks.shoppingapp.ui_layer.viewmodels.ShoppingAppViewModel
 
 @Composable

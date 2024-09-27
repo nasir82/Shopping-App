@@ -1,7 +1,7 @@
 package com.pks.shoppingapp.ui_layer.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.HeartBroken
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -20,7 +20,7 @@ val navItemList = listOf(
     ),
      NavigationItem(
         title = "WishList",
-        icon = Icons.Default.HeartBroken
+        icon = Icons.Default.FavoriteBorder
     ),
      NavigationItem(
         title = "Cart",

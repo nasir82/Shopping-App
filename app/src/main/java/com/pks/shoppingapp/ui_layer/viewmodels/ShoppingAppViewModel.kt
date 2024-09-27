@@ -3,10 +3,14 @@ package com.pks.shoppingapp.ui_layer.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.pks.shoppingapp.authentication.domain.model.UserData
+import com.pks.shoppingapp.authentication.domain.usecase.CreateUserUseCase
+import com.pks.shoppingapp.authentication.domain.usecase.GetUserUseCase
+import com.pks.shoppingapp.authentication.domain.usecase.SignInUseCase
+import com.pks.shoppingapp.authentication.domain.usecase.UpdateUserUseCase
+import com.pks.shoppingapp.authentication.presentation.profile.ProfileScreenState
+import com.pks.shoppingapp.authentication.presentation.signup.SignupScreenState
 import com.pks.shoppingapp.common.ResultState
-import com.pks.shoppingapp.domain_layer.model.UserData
-import com.pks.shoppingapp.domain_layer.use_case.CreateUserUseCase
-import com.pks.shoppingapp.domain_layer.use_case.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,50 +20,62 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ShoppingAppViewModel @Inject constructor(private val creaseUserUseCase: CreateUserUseCase,private val getUserUseCase: GetUserUseCase,val auth: FirebaseAuth): ViewModel() {
+class ShoppingAppViewModel @Inject constructor(
+    private val creaseUserUseCase: CreateUserUseCase,
+    private val getUserUseCase: GetUserUseCase,
+    val auth: FirebaseAuth,
+    val signInUseCase: SignInUseCase,
+    val updateUserUseCase: UpdateUserUseCase
+) : ViewModel() {
 
     private val _signupScreenState = MutableStateFlow(SignupScreenState())
-    val signupScreenState= _signupScreenState.asStateFlow()
+    val signupScreenState = _signupScreenState.asStateFlow()
     private val _loginScreenState = MutableStateFlow(SignupScreenState())
-    val loginScreenState= _loginScreenState.asStateFlow()
+    val loginScreenState = _loginScreenState.asStateFlow()
     private val _profileScreenState = MutableStateFlow(ProfileScreenState())
-    val profileScreenState= _profileScreenState.asStateFlow()
+    val profileScreenState = _profileScreenState.asStateFlow()
 
     init {
-       // getUserByUid(uid = auth.currentUser!!.uid)
+        // getUserByUid(uid = auth.currentUser!!.uid)
     }
-    fun createUser(userData: UserData){
+
+    fun createUser(userData: UserData) {
         viewModelScope.launch {
 
-            creaseUserUseCase.createUser(userData).collect{
-                when(it){
+            creaseUserUseCase.createUser(userData).collect {
+                when (it) {
                     is ResultState.Error -> {
                         _signupScreenState.value = SignupScreenState(error = it.message)
                     }
+
                     ResultState.Loading -> {
                         _signupScreenState.value = SignupScreenState(isLoading = true)
                     }
+
                     is ResultState.Success -> {
-                        _signupScreenState.value  = SignupScreenState(userData = it.data)
+                        _signupScreenState.value = SignupScreenState(userData = it.data)
                     }
                 }
             }
         }
 
     }
-    fun signIn(email:String,password:String){
+
+    fun signIn(email: String, password: String) {
         viewModelScope.launch {
 
-            creaseUserUseCase.singIn(email=email,password=password).collect{
-                when(it){
+            signInUseCase.singIn(email = email, password = password).collect {
+                when (it) {
                     is ResultState.Error -> {
                         _loginScreenState.value = SignupScreenState(error = it.message)
                     }
+
                     ResultState.Loading -> {
                         _loginScreenState.value = SignupScreenState(isLoading = true)
                     }
+
                     is ResultState.Success -> {
-                        _loginScreenState.value  = SignupScreenState(userData = it.data)
+                        _loginScreenState.value = SignupScreenState(userData = it.data)
                     }
                 }
             }
@@ -67,34 +83,25 @@ class ShoppingAppViewModel @Inject constructor(private val creaseUserUseCase: Cr
 
     }
 
-    fun getUserByUid(uid:String){
-                viewModelScope.launch {
-                    getUserUseCase.getUserWithuid(uid).collectLatest {
+    fun getUserByUid(uid: String) {
+        viewModelScope.launch {
+            getUserUseCase.getUserWithUid(uid).collectLatest {
 
-                        when(it){
-                            is ResultState.Error -> {
-                                _profileScreenState.value = ProfileScreenState(errorMessage = it.message.toString())
-                            }
-                            ResultState.Loading -> {
-                                _profileScreenState.value = ProfileScreenState(isLoading = true)
-                            }
-                            is ResultState.Success -> {
-                                _profileScreenState.value = ProfileScreenState(userData = it.data)
-                            }
-                        }
+                when (it) {
+                    is ResultState.Error -> {
+                        _profileScreenState.value =
+                            ProfileScreenState(errorMessage = it.message.toString())
+                    }
+
+                    ResultState.Loading -> {
+                        _profileScreenState.value = ProfileScreenState(isLoading = true)
+                    }
+
+                    is ResultState.Success -> {
+                        _profileScreenState.value = ProfileScreenState(userData = it.data.userData)
                     }
                 }
+            }
+        }
     }
 }
-
-data class ProfileScreenState(
-    val isLoading: Boolean = false,
-    val errorMessage:String? = null,
-    val userData: UserData? = null
-)
-
-data class SignupScreenState(
-    val isLoading:Boolean = false,
-    val error: String? = null,
-    val userData: String?=null
-)

@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.ui_layer.screens
+package com.pks.shoppingapp.authentication.presentation.login
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,24 +29,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.pks.shoppingapp.R
+import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
+import com.pks.shoppingapp.authentication.presentation.signup.HrSpacer
 import com.pks.shoppingapp.components.DividerWithText
 import com.pks.shoppingapp.components.LoginWithSocialMedia
 import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.components.ShoppingTextField
-import com.pks.shoppingapp.ui_layer.navigation.AppNav
 import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
-import com.pks.shoppingapp.ui_layer.viewmodels.ShoppingAppViewModel
 
 
 @Composable
-fun LoginScreenUi(modifier: Modifier = Modifier,viewModel: ShoppingAppViewModel= hiltViewModel(),nav:NavHostController,firebaseAuth: FirebaseAuth) {
+fun LoginScreenUi(viewModel: AuthenticationViewModel,nav:NavHostController,firebaseAuth: FirebaseAuth) {
     val x = LocalConfiguration.current.screenWidthDp - 150
     val y = LocalConfiguration.current.screenHeightDp - 80
 
@@ -62,25 +61,40 @@ fun LoginScreenUi(modifier: Modifier = Modifier,viewModel: ShoppingAppViewModel=
 
     val loginState = viewModel.loginScreenState.collectAsStateWithLifecycle()
     if(loginState.value.isLoading){
-        Box(modifier = Modifier.fillMaxSize()){
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center){
             CircularProgressIndicator()
         }
     }else if(loginState.value.error!=null){
-        Box(modifier = Modifier.fillMaxSize()){
-            Text(text = loginState.value.error.toString())
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center){
+            Text(text = loginState.value.error.toString(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
         }
     }else if (loginState.value.userData!=null){
         viewModel.getUserByUid(firebaseAuth.currentUser!!.uid)
-        AppNav(firebaseAuth = firebaseAuth)
+        /** call categories, wishlist from here
+         using wishlist view models and cartviewmodel
+         */
+
+        nav.navigate(NavDestinations.ShowOff){
+            popUpTo(NavDestinations.LoginScreen) {
+                inclusive = true
+            }
+        }
+        //AppNav(firebaseAuth = firebaseAuth)
     }else {
 
         var icon = if (isShow.value) Icons.Default.VisibilityOff else Icons.Default.Visibility
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)) {
             Box(
                 modifier = Modifier
 
                     .offset(x = (x).dp, y = (-200).dp)
-                    .background(color = Color(0xFFF68B8B), shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
                     .size(size = 350.dp)
                     .clip(
                         shape = CircleShape
@@ -90,7 +104,7 @@ fun LoginScreenUi(modifier: Modifier = Modifier,viewModel: ShoppingAppViewModel=
                 modifier = Modifier
 
                     .offset(x = (-160).dp, y = (y).dp)
-                    .background(color = Color(0xFFF68B8B), shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
                     .size(size = 250.dp)
                     .clip(
                         shape = CircleShape
@@ -100,15 +114,14 @@ fun LoginScreenUi(modifier: Modifier = Modifier,viewModel: ShoppingAppViewModel=
             Column(
                 Modifier
                     .fillMaxSize()
+                    .background(color = Color.Transparent)
                     .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
 
-                Text(text = "Login")
+                Text(text = "Login", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
                 HrSpacer(height = 20)
-
-
                 ShoppingTextField(label = "Email", value = email.value) {
                     email.value = it
                 }
@@ -124,11 +137,11 @@ fun LoginScreenUi(modifier: Modifier = Modifier,viewModel: ShoppingAppViewModel=
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    Text(text = "Forgot Password?", modifier = Modifier.clickable { })
+                    Text(text = "Forgot Password?", modifier = Modifier.clickable { },style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onBackground)
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                ShoppingButton(text = "Login", containerColor = Color(0xFFF68B8B)) {
+                ShoppingButton(text = "Login", containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onBackground) {
                        if(email.value.isBlank() || password.value.isBlank()){
                            Log.d("error","not login")
                        }else{
@@ -141,15 +154,15 @@ fun LoginScreenUi(modifier: Modifier = Modifier,viewModel: ShoppingAppViewModel=
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Don't have an account?  ")
+                    Text(text = "Don't have an account?  ",style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                     Text(
                         text = "Signup",
-                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
                             nav.navigate(NavDestinations.SignUpScreen)
-                        })
+                        },style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

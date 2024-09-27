@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.ui_layer.screens
+package com.pks.shoppingapp.authentication.presentation.signup
 
 import android.util.Log
 import android.widget.Toast
@@ -21,9 +21,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -33,29 +33,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.pks.shoppingapp.R
+import com.pks.shoppingapp.authentication.domain.model.UserData
+import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
 import com.pks.shoppingapp.components.DividerWithText
 import com.pks.shoppingapp.components.LoginWithSocialMedia
 import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.components.ShoppingTextField
-import com.pks.shoppingapp.domain_layer.model.UserData
 import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
-import com.pks.shoppingapp.ui_layer.viewmodels.ShoppingAppViewModel
+import com.pks.shoppingapp.ui_layer.screens.SuccessScreen
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun SignUpScreenUI(
-    modifier: Modifier = Modifier,
-    viewModel: ShoppingAppViewModel = hiltViewModel(),
+    viewModel:AuthenticationViewModel,
     nav: NavController
 ) {
     val x = LocalConfiguration.current.screenWidthDp - 150
@@ -67,6 +63,9 @@ fun SignUpScreenUI(
         mutableStateOf("")
     }
     val email = remember {
+        mutableStateOf("")
+    }
+    val address = remember {
         mutableStateOf("")
     }
     val password = remember {
@@ -85,24 +84,36 @@ fun SignUpScreenUI(
     val state = viewModel.signupScreenState.collectAsState()
     if (state.value.isLoading) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
     } else if (state.value.error != null) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text(text = state.value.error.toString())
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background), verticalArrangement = Arrangement.Center) {
+            Text(text = state.value.error.toString(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+            ShoppingButton(text = "Try Again", contentColor = MaterialTheme.colorScheme.onBackground, containerColor = MaterialTheme.colorScheme.primary) {
+                viewModel.reAssignSignUp()
+            }
         }
     } else if (state.value.userData != null) {
+        /**
+         * Don't need to collect because there is no such list
+         */
         SuccessScreen(navDestinations = nav)
     } else {
 
         var icon = if (isShow.value) Icons.Default.VisibilityOff else Icons.Default.Visibility
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)) {
             Box(
                 modifier = Modifier
 
                     .offset(x = (x).dp, y = (-200).dp)
-                    .background(color = Color(0xFFF68B8B), shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
                     .size(size = 350.dp)
                     .clip(
                         shape = CircleShape
@@ -112,7 +123,7 @@ fun SignUpScreenUI(
                 modifier = Modifier
 
                     .offset(x = (-160).dp, y = (y).dp)
-                    .background(color = Color(0xFFF68B8B), shape = CircleShape)
+                    .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
                     .size(size = 250.dp)
                     .clip(
                         shape = CircleShape
@@ -122,12 +133,13 @@ fun SignUpScreenUI(
             Column(
                 Modifier
                     .fillMaxSize()
+                    .background(color = Color.Transparent)
                     .padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
 
-                Text(text = "Signup")
+                Text(text = "Signup", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
                 HrSpacer(height = 20)
 
                 Row(modifier = Modifier.fillMaxWidth()) {
@@ -152,6 +164,9 @@ fun SignUpScreenUI(
                 ShoppingTextField(label = "Email", value = email.value) {
                     email.value = it
                 }
+                ShoppingTextField(label = "Address", value = address.value) {
+                    address.value = it
+                }
                 ShoppingTextField(
                     label = "password",
                     value = password.value,
@@ -174,7 +189,7 @@ fun SignUpScreenUI(
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                ShoppingButton(text = "Signup", containerColor = Color(0xFFF68B8B)) {
+                ShoppingButton(text = "Signup", containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onBackground) {
                     if (fName.value.isBlank() || email.value.isBlank() || password.value.isBlank() || confirmPassword.value.isBlank()) {
                         Log.d("isBlack","Blank ase")
                         coroutineScope.launch {
@@ -200,12 +215,13 @@ fun SignUpScreenUI(
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Already have an account?  ")
+                    Text(text = "Already have an account?  ", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                     Text(
                         text = "Login",
-                        fontWeight = FontWeight.Bold,
+                         style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.clickable {
                             nav.navigate(NavDestinations.LoginScreen)
                         })

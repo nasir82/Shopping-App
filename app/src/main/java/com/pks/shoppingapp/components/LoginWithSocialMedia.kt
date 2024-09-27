@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +31,7 @@ fun LoginWithSocialMedia(modifier: Modifier = Modifier,media:Int,text:String) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Image(painterResource(id = media), contentDescription = "", modifier = Modifier.size(32.dp))
             Spacer(modifier = Modifier.width(20.dp))
-            Text(text = text, maxLines = 1, overflow = TextOverflow.Ellipsis, color = Color.Black)
+            Text(text = text, maxLines = 1, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.labelSmall)
         }
     }
 

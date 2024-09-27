@@ -1,7 +1,7 @@
 package com.pks.shoppingapp.domain_layer.repo
 
+import com.pks.shoppingapp.authentication.domain.model.UserData
 import com.pks.shoppingapp.common.ResultState
-import com.pks.shoppingapp.domain_layer.model.UserData
 import kotlinx.coroutines.flow.Flow
 
 interface ShoppingRepo {

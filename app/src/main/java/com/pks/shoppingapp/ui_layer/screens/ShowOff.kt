@@ -18,10 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
+import com.pks.shoppingapp.home.presentation.HomeScreenUi
+import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.ui_layer.navigation.navItemList
 
 @Composable
-fun ShowOff(modifier: Modifier = Modifier.fillMaxSize(),nav:NavHostController,auth: FirebaseAuth) {
+fun ShowOff(modifier: Modifier = Modifier.fillMaxSize(),nav:NavHostController,auth: FirebaseAuth,homeViewModel: HomeViewModel) {
 
     val selectedScreen = remember {
         mutableIntStateOf(0)
@@ -63,10 +65,10 @@ fun ShowOff(modifier: Modifier = Modifier.fillMaxSize(),nav:NavHostController,au
         ){
 
             when(selectedScreen.intValue){
-                0 -> HomeScreenUi(nav = nav)
+                0 -> HomeScreenUi(nav = nav, homeViewmodel = homeViewModel)
                 1 -> WishListScreenUI(nav = nav)
                 2-> CartScreenUI()
-                3 -> ProfileScreeUI(auth = auth, nav = nav)
+                3 -> SettingScreenUI(nav = nav)
             }
         }
 

@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,8 +35,9 @@ import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
 
 
+
 @Composable
-fun SuccessScreen(modifier: Modifier = Modifier, navDestinations: NavController) {
+fun SuccessScreen(navDestinations: NavController) {
 
     Box(
         modifier = Modifier
@@ -48,12 +50,13 @@ fun SuccessScreen(modifier: Modifier = Modifier, navDestinations: NavController)
                 .height(360.dp)
                 .width(350.dp)
                 .clip(shape = RoundedCornerShape(15.dp))
-                .background(color = Color.White, shape = RoundedCornerShape(15.dp))
+                .background(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(15.dp))
         ) {
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(color = Color.Transparent)
                     .padding(horizontal = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -64,26 +67,33 @@ fun SuccessScreen(modifier: Modifier = Modifier, navDestinations: NavController)
                         .clip(shape = CircleShape)
                         .background(
                             shape = CircleShape,
-                            color = Color(0xFFF68B8B)
+                            color = MaterialTheme.colorScheme.primary
                         )
                 ) {
                     Icon(
                         imageVector = Icons.Default.Done,
                         contentDescription = "",
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(56.dp)
                     )
                 }
                 Spacer(modifier = Modifier.height(24.dp))
-                Text(text = "Success", color = Color(0xFFF68B8B))
+                Text(text = "Success",  style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary,)
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
-                    text = "Congratulations, you have complated your registration!",
+                    text = "Congratulations, you have completed your registration!",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(24.dp))
-                ShoppingButton(text = "Done", containerColor = Color(0xFFF68B8B)) {
-                    navDestinations.navigate(NavDestinations.HomeScreen)
+                ShoppingButton(text = "Done", containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onBackground) {
+                    navDestinations.navigate(NavDestinations.HomeScreen){
+                        popUpTo(NavDestinations.SignUpScreen){
+                            inclusive = true
+                        }
+                    }
                 }
             }
 

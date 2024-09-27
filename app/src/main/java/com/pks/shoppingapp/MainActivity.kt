@@ -7,7 +7,9 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.ui.theme.ShoppingAppTheme
 import com.pks.shoppingapp.ui_layer.navigation.AppNav
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShoppingAppTheme {
 //              App(firebaseAuth=firebaseAuth)
-                AppNav(firebaseAuth = firebaseAuth)
+                val homeViewModel:HomeViewModel = hiltViewModel()
+                AppNav(firebaseAuth = firebaseAuth,homeViewModel=homeViewModel)
             }
         }
     }
