@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.pks.shoppingapp.authentication.domain.model.UserData
 import com.pks.shoppingapp.authentication.domain.usecase.CreateUserUseCase
 import com.pks.shoppingapp.authentication.domain.usecase.GetUserUseCase
@@ -14,7 +15,6 @@ import com.pks.shoppingapp.authentication.presentation.profile.UpdateUserDataSta
 import com.pks.shoppingapp.authentication.presentation.signup.SignupScreenState
 import com.pks.shoppingapp.common.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -26,7 +26,8 @@ class AuthenticationViewModel @Inject constructor(
     private val createUserUseCase: CreateUserUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val updateUserDataUseCase: UpdateUserUseCase,
-    private val signInUseCase:SignInUseCase
+    private val signInUseCase:SignInUseCase,
+    private val auth:FirebaseAuth
 
 ) : ViewModel() {
     private val _signupScreenState = MutableStateFlow(SignupScreenState())
@@ -38,7 +39,7 @@ class AuthenticationViewModel @Inject constructor(
     private val _profileScreenState = MutableStateFlow(ProfileScreenState())
     val profileScreenState = _profileScreenState.asStateFlow()
     val profileUi = mutableStateOf<ProfileScreenState>(ProfileScreenState())
-
+    val userDataState = MutableStateFlow(UserDataState())
     fun createUser(userData: UserData) {
         viewModelScope.launch {
 
@@ -79,7 +80,6 @@ class AuthenticationViewModel @Inject constructor(
                     }
 
                     is ResultState.Success -> {
-
                         _loginScreenState.value = SignupScreenState(userData = it.data)
                     }
                 }
@@ -89,40 +89,26 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     fun getUserByUid(uid: String) {
-        Log.d("Data is loading befor", profileScreenState.value.toString())
-        _profileScreenState.value = _profileScreenState.value.copy(
-            isLoading = true
-        )
         viewModelScope.launch {
             Log.d("Data is loading", "data")
-            delay(6000)
+
             getUserUseCase.getUserWithUid(uid).collectLatest {
 
                 when (it) {
                     is ResultState.Error -> {
-                        Log.d("Data is loading", "error")
-                        _profileScreenState.value =
-                            _profileScreenState.value.copy(
-                                isLoading = false,
-                                errorMessage = it.message.toString()
-                            )
+                        Log.d("UserData","Error")
+                       userDataState.value = UserDataState(error = it.message)
                     }
 
                     ResultState.Loading -> {
-                        Log.d("Data is loading", "Loading")
-                        _profileScreenState.value = _profileScreenState.value.copy(
-                            isLoading = true
-                        )
+                        Log.d("UserData","loading")
+                        userDataState.value = UserDataState(isLoading = true)
                     }
 
                     is ResultState.Success -> {
-                        //profileUi.value = ProfileScreenState(userData = it.data)
-
-                        _profileScreenState.value = _profileScreenState.value.copy(
-                            isLoading = false,
-                            userData = it.data.userData
-                        )
-//                        Log.d("Data is loading in", profileScreenState.value.data.toString())
+                        Log.d("UserData","load ${it.data.userData}")
+                        if(it.data.userData == null)userDataState.value = UserDataState(error = "Unknown error occurred")
+                        else userDataState.value = UserDataState(userData = it.data.userData)
                     }
                 }
                 Log.d("Data is loading after", profileScreenState.value.toString())
@@ -160,5 +146,15 @@ class AuthenticationViewModel @Inject constructor(
     fun reAssignSignUp(){
         _signupScreenState.value = SignupScreenState()
     }
+    fun alter(){
+        _loginScreenState.value = SignupScreenState()
+    }
 
 }
+
+
+data class UserDataState(
+    val isLoading:Boolean=false,
+    val error:String ="",
+    val userData: UserData = UserData()
+)

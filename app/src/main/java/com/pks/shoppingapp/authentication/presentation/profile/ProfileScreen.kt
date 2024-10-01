@@ -34,22 +34,20 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.pks.shoppingapp.R
+import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
+import com.pks.shoppingapp.authentication.presentation.signup.HrSpacer
+import com.pks.shoppingapp.authentication.presentation.signup.ShoppingAlertDialog
 import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.components.ShoppingTextField
 import com.pks.shoppingapp.components.ShoppingTextField2
-import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
-import com.pks.shoppingapp.authentication.presentation.signup.HrSpacer
-import com.pks.shoppingapp.ui_layer.screens.ShoppingAlertDialog
-import com.pks.shoppingapp.ui_layer.viewmodels.ShoppingAppViewModel
+import com.pks.shoppingapp.navigation.NavDestinations
 
 @Composable
 fun ProfileScreeUI(
-    modifier: Modifier = Modifier,
-    viewModel: ShoppingAppViewModel = hiltViewModel(),
+    viewModel: AuthenticationViewModel,
     nav:NavHostController,
     auth:FirebaseAuth
 ) {

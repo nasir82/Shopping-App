@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -50,11 +49,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.pks.shoppingapp.R
 import com.pks.shoppingapp.components.MultiItemCarouselWithIndicator
 import com.pks.shoppingapp.components.SearchBar
 import com.pks.shoppingapp.components.SectionHeading
-import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
+import com.pks.shoppingapp.components.shimmerEffect
+import com.pks.shoppingapp.core.utils.ui.LoadingCategory
+import com.pks.shoppingapp.navigation.NavDestinations
 
 
 @Composable
@@ -103,52 +103,78 @@ fun HomeScreenUi(
                     nav.navigate(NavDestinations.AllCategory)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
+
                 LazyRow(modifier = Modifier.fillMaxWidth()) {
-                    items(categoryState.categories) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-                                .wrapContentSize()
-                                .padding(end = 8.dp)
-                        ) {
-                            Card(
+                    if (categoryState.isLoading) {
+                        items(6) {
+                            LoadingCategory()
+                        }
+                    } else {
+                        items(categoryState.categories) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier
-                                    .size(70.dp)
-                                    .clip(shape = CircleShape)
-                                    .border(width = 1.dp, color = Color.Gray, shape = CircleShape),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = Color.Transparent
-                                )
+                                    .wrapContentSize()
+                                    .padding(end = 8.dp)
                             ) {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    AsyncImage(
-                                        model = ImageRequest.Builder(LocalContext.current)
-                                            .data(it.image)
-                                            .crossfade(true) // Enables crossfade animation
-                                            .build(),
-                                        contentDescription = "",
-                                        modifier = Modifier
-                                            .size(70.dp)
-                                            .clip(shape = CircleShape),
-                                        contentScale = ContentScale.Crop
+                                Card(
+                                    modifier = Modifier
+                                        .size(70.dp)
+                                        .clip(shape = CircleShape)
+                                        .border(
+                                            width = 1.dp,
+                                            color = Color.Gray,
+                                            shape = CircleShape
+                                        ),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = Color.Transparent
                                     )
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        AsyncImage(
+                                            model = ImageRequest.Builder(LocalContext.current)
+                                                .data(it.image)
+                                                .crossfade(true) // Enables crossfade animation
+                                                .build(),
+                                            contentDescription = "",
+                                            modifier = Modifier
+                                                .size(70.dp)
+                                                .clip(shape = CircleShape),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    }
                                 }
+                                Spacer(modifier = Modifier.height(5.dp))
+                                Text(
+                                    text = it.name,
+                                    overflow = TextOverflow.Ellipsis,
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    modifier = Modifier.width(70.dp)
+                                )
                             }
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Text(
-                                text = it.name,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                                maxLines = 1,
-                                modifier = Modifier.width(70.dp)
-                            )
                         }
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                MultiItemCarouselWithIndicator(items = productState.products)
+                if(productState.isLoading) LazyRow {
+                    items(5){
+                        Box (modifier = Modifier.height(150.dp), contentAlignment = Alignment.CenterStart){
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = 10.dp)
+                                    .height(120.dp)
+                                    .width(100.dp)
+                                    .clip(shape = RoundedCornerShape(10.dp))
+                                    .shimmerEffect()
+                            )
+                        }
+                    }
+                }
+                else MultiItemCarouselWithIndicator(items = productState.products)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -159,7 +185,11 @@ fun HomeScreenUi(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 LazyRow(modifier = Modifier.fillMaxWidth()) {
-                    items(productState.products.take(5)) {product->
+                    if(productState.isLoading)
+                        items(5){
+                            LoadingProducts()
+                        }
+                    else items(productState.products.take(5)) { product ->
                         Column {
                             Card(
                                 modifier = Modifier
@@ -251,34 +281,28 @@ fun HomeScreenUi(
 
 
 @Composable
-fun CategoryItemCard(modifier: Modifier = Modifier) {
+fun LoadingProducts() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Card(
-            modifier = Modifier
-                .padding(end = 10.dp)
-                .size(60.dp)
-                .clip(shape = CircleShape)
-                .border(width = 1.dp, color = Color.Gray, shape = CircleShape),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.Transparent
+        Box(modifier = Modifier
+
+            .padding(end = 10.dp)
+            .width(100.dp)
+            .height(140.dp)
+            .clip(
+                shape = RoundedCornerShape(12.dp)
             )
-        ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painterResource(id = R.drawable.ic_google),
-                    contentDescription = "",
-                    modifier = Modifier.size(48.dp)
-                )
-            }
-        }
+            .shimmerEffect()
+        )
         Spacer(modifier = Modifier.height(5.dp))
-        Text(
-            text = "Suit",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(end = 15.dp)
+        Box(modifier = Modifier
+
+            .padding(end = 10.dp)
+            .width(100.dp)
+            .height(140.dp)
+            .clip(
+                shape = RoundedCornerShape(12.dp)
+            )
+            .shimmerEffect()
         )
     }
 }

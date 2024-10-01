@@ -47,7 +47,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
             .clip(shape = RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onBackground,
                 shape = RoundedCornerShape(12.dp)
             ),
         verticalAlignment = Alignment.CenterVertically
@@ -67,7 +67,7 @@ fun SearchBar(modifier: Modifier = Modifier) {
                     if (searchState.value.isEmpty()) {
                         Text(
                             text = "Search",
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                             modifier = Modifier
                                 .wrapContentHeight()
                         )

@@ -44,8 +44,7 @@ import com.pks.shoppingapp.components.DividerWithText
 import com.pks.shoppingapp.components.LoginWithSocialMedia
 import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.components.ShoppingTextField
-import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
-import com.pks.shoppingapp.ui_layer.screens.SuccessScreen
+import com.pks.shoppingapp.navigation.NavDestinations
 import kotlinx.coroutines.launch
 
 
@@ -98,7 +97,7 @@ fun SignUpScreenUI(
                 viewModel.reAssignSignUp()
             }
         }
-    } else if (state.value.userData != null) {
+    } else if (state.value.userData.isNotEmpty()) {
         /**
          * Don't need to collect because there is no such list
          */

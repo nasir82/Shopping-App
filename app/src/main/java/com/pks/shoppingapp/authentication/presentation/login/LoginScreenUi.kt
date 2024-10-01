@@ -22,6 +22,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,21 +32,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.pks.shoppingapp.R
 import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
 import com.pks.shoppingapp.authentication.presentation.signup.HrSpacer
+import com.pks.shoppingapp.cart.presentation.CartViewModel
 import com.pks.shoppingapp.components.DividerWithText
 import com.pks.shoppingapp.components.LoginWithSocialMedia
 import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.components.ShoppingTextField
-import com.pks.shoppingapp.ui_layer.navigation.NavDestinations
+import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.wishlist.presentation.WishListViewModel
 
 
 @Composable
-fun LoginScreenUi(viewModel: AuthenticationViewModel,nav:NavHostController,firebaseAuth: FirebaseAuth) {
+fun LoginScreenUi(
+    viewModel: AuthenticationViewModel,
+    nav: NavHostController,
+    firebaseAuth: FirebaseAuth,
+    cartViewModel: CartViewModel,
+    wishListViewModel: WishListViewModel
+) {
     val x = LocalConfiguration.current.screenWidthDp - 150
     val y = LocalConfiguration.current.screenHeightDp - 80
 
@@ -59,37 +68,64 @@ fun LoginScreenUi(viewModel: AuthenticationViewModel,nav:NavHostController,fireb
         mutableStateOf(true)
     }
 
-    val loginState = viewModel.loginScreenState.collectAsStateWithLifecycle()
-    if(loginState.value.isLoading){
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center){
+    val loginState = viewModel.loginScreenState.collectAsState()
+    if (loginState.value.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
-    }else if(loginState.value.error!=null){
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center){
-            Text(text = loginState.value.error.toString(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+    } else if (loginState.value.error != null) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = loginState.value.error.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
-    }else if (loginState.value.userData!=null){
-        viewModel.getUserByUid(firebaseAuth.currentUser!!.uid)
+    } else if (loginState.value.userData.isNotEmpty()) {
+        //viewModel.getUserByUid(firebaseAuth.currentUser!!.uid)
         /** call categories, wishlist from here
-         using wishlist view models and cartviewmodel
+        using wishlist view models and cartviewmodel
          */
 
-        nav.navigate(NavDestinations.ShowOff){
-            popUpTo(NavDestinations.LoginScreen) {
-                inclusive = true
+
+        LaunchedEffect(key1 = Unit) {
+            viewModel.getUserByUid(firebaseAuth.currentUser!!.uid)
+            cartViewModel.getCarts()
+            wishListViewModel.getWishList()
+            nav.navigate(NavDestinations.ShowOff)
+            {
+                nav.popBackStack()
             }
         }
+        // cartViewModel.getCarts()
+        // wishListViewModel.getWishList()
+//        Box(modifier = Modifier.fillMaxSize()){
+//            SuccessScreen(navDestinations = nav)
+//        }
+        // nav.navigate(NavDestinations.ShowOff)
+//        {
+//            nav.popBackStack()
+//        }
+        //viewModel.alter()
         //AppNav(firebaseAuth = firebaseAuth)
-    }else {
+    } else {
 
         var icon = if (isShow.value) Icons.Default.VisibilityOff else Icons.Default.Visibility
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+        ) {
             Box(
                 modifier = Modifier
 
@@ -120,7 +156,11 @@ fun LoginScreenUi(viewModel: AuthenticationViewModel,nav:NavHostController,fireb
                 verticalArrangement = Arrangement.Center
             ) {
 
-                Text(text = "Login", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+                Text(
+                    text = "Login",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
                 HrSpacer(height = 20)
                 ShoppingTextField(label = "Email", value = email.value) {
                     email.value = it
@@ -137,17 +177,26 @@ fun LoginScreenUi(viewModel: AuthenticationViewModel,nav:NavHostController,fireb
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    Text(text = "Forgot Password?", modifier = Modifier.clickable { },style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        text = "Forgot Password?",
+                        modifier = Modifier.clickable { },
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                ShoppingButton(text = "Login", containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onBackground) {
-                       if(email.value.isBlank() || password.value.isBlank()){
-                           Log.d("error","not login")
-                       }else{
+                ShoppingButton(
+                    text = "Login",
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                ) {
+                    if (email.value.isBlank() || password.value.isBlank()) {
+                        Log.d("error", "not login")
+                    } else {
 
-                           viewModel.signIn(email = email.value,password=password.value)
-                       }
+                        viewModel.signIn(email = email.value, password = password.value)
+                    }
 
                 }
 
@@ -157,12 +206,19 @@ fun LoginScreenUi(viewModel: AuthenticationViewModel,nav:NavHostController,fireb
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Don't have an account?  ",style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                    Text(
+                        text = "Don't have an account?  ",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                     Text(
                         text = "Signup",
                         modifier = Modifier.clickable {
                             nav.navigate(NavDestinations.SignUpScreen)
-                        },style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+                        },
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

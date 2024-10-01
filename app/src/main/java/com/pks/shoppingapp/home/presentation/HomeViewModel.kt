@@ -35,12 +35,10 @@ class HomeViewModel @Inject constructor(private val getProductsUseCase: GetProdu
             getCategoriesUseCase.getCategories().collectLatest {
                 when (it) {
                     is ResultState.Error -> {
-                        Log.d("inside category collector", "collectng category error")
                         _categoryState.value = CategoryState(error = it.message)
                     }
 
                     ResultState.Loading -> {
-                        Log.d("inside category collector", "collectng category loading")
                         _categoryState.value = CategoryState(isLoading = true)
                     }
 
@@ -62,7 +60,6 @@ class HomeViewModel @Inject constructor(private val getProductsUseCase: GetProdu
 
     fun getProduct() {
         viewModelScope.launch {
-            Log.d("gettign products...","start")
             getProductsUseCase.getProducts().collectLatest {
                 when (it) {
                     is ResultState.Error -> {
@@ -76,12 +73,9 @@ class HomeViewModel @Inject constructor(private val getProductsUseCase: GetProdu
                     is ResultState.Success -> {
                         //statusList.value  = it.data.data ?: emptyList()
                         _productState.value = ProductState(products = it.data.products)
-
-                        Log.d("gettign products...","end with ${it.data.products}")
                     }
                 }
             }
-            Log.d("gettign products...","end")
         }
     }
 

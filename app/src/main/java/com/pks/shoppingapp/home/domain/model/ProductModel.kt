@@ -1,5 +1,6 @@
 package com.pks.shoppingapp.home.domain.model
 
+
 data class ProductModel(
     var id: String="",
     var stock: Int=0,
@@ -18,8 +19,6 @@ data class ProductModel(
     var productAttribute: List<ProductAttributeModel> = mutableListOf(),
     var productVariation: List<ProductVariationsModel> = mutableListOf(),
 )
-
-
 data class BrandModel(
 
     var id: String="",
@@ -28,11 +27,11 @@ data class BrandModel(
     var isFeatured: Boolean=false,
     var productCount: Int=0
 )
-
 data class ProductAttributeModel(
     var name:String="",
     var values:List<String> = emptyList()
 )
+
 
 data class ProductVariationsModel(
 
@@ -46,6 +45,30 @@ data class ProductVariationsModel(
     var attributeValues:Map<String,String> = mutableMapOf()
 
 )
+
+
+//val ProductType = object: NavType<ProductModel>(false){
+//    override fun get(bundle: Bundle, key: String): ProductModel? {
+//        return if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU){
+//            bundle.getParcelable(key,ProductModel::class.java)
+//        }else{
+//            bundle.getParcelable(key)
+//        }
+//    }
+//
+//    override fun parseValue(value: String): ProductModel {
+//        return Json.decodeFromString(value)
+//    }
+//
+//    override fun put(bundle: Bundle, key: String, value: ProductModel) {
+//        bundle.putParcelable(key,value)
+//    }
+//
+//    override fun serializeAsValue(value: ProductModel): String {
+//        return  Json.encodeToString(value)
+//    }
+//
+//}
 
 
 val products = listOf(
