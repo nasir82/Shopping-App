@@ -98,7 +98,9 @@ fun SettingScreenUI(
                     FirebaseAuth
                         .getInstance()
                         .signOut()
-                    nav.navigate(NavDestinations.LoginScreen)
+                    nav.navigate(NavDestinations.LoginScreen){
+                        nav.popBackStack()
+                    }
                 })
             }
             Spacer(modifier = Modifier.height(20.dp))

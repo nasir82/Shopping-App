@@ -222,7 +222,9 @@ fun SignUpScreenUI(
                         text = "Login",
                          style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.clickable {
-                            nav.navigate(NavDestinations.LoginScreen)
+                            nav.navigate(NavDestinations.LoginScreen){
+                                nav.popBackStack()
+                            }
                         })
                 }
 
@@ -245,3 +247,4 @@ fun HrSpacer(modifier: Modifier = Modifier, height: Int) {
     Spacer(modifier = Modifier.height(height.dp))
 
 }
+

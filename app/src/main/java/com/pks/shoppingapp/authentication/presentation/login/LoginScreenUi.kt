@@ -214,7 +214,9 @@ fun LoginScreenUi(
                     Text(
                         text = "Signup",
                         modifier = Modifier.clickable {
-                            nav.navigate(NavDestinations.SignUpScreen)
+                            nav.navigate(NavDestinations.SignUpScreen){
+                                nav.popBackStack()
+                            }
                         },
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onBackground
