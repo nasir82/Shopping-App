@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +57,7 @@ fun LoginScreenUi(
 ) {
     val x = LocalConfiguration.current.screenWidthDp - 150
     val y = LocalConfiguration.current.screenHeightDp - 80
+    val corotine = rememberCoroutineScope()
 
     val email = remember {
         mutableStateOf("")
@@ -85,11 +87,17 @@ fun LoginScreenUi(
                 .background(color = MaterialTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = loginState.value.error.toString(),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+                Text(
+                    text = loginState.value.error.toString(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                ShoppingButton(text = "Try Again") {
+                    viewModel.clearLoginScreen()
+                }
+            }
         }
     } else if (loginState.value.userData.isNotEmpty()) {
         //viewModel.getUserByUid(firebaseAuth.currentUser!!.uid)
@@ -99,6 +107,7 @@ fun LoginScreenUi(
 
 
         LaunchedEffect(key1 = Unit) {
+            viewModel.onLoginSuccess(firebaseAuth.currentUser!!.uid)
             viewModel.getUserByUid(firebaseAuth.currentUser!!.uid)
             cartViewModel.getCarts()
             wishListViewModel.getWishList()

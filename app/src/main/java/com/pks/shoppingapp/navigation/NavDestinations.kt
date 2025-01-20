@@ -31,6 +31,8 @@ sealed class NavDestinations {
 
     @Serializable
     data object CartScreen : NavDestinations()
+    @Serializable
+    data object CheckOut : NavDestinations()
 
     @Serializable
     data class ProductDetailsScreen(val productId:String) : NavDestinations()
@@ -47,6 +49,9 @@ sealed class NavDestinations {
 
     @Serializable
     data object ShowOff : NavDestinations()
+
+    @Serializable
+    data class CategoryBasedProducts(val categoryName: String) : NavDestinations()
 
 
 }

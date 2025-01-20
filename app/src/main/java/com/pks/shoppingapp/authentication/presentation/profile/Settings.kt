@@ -39,12 +39,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.pks.shoppingapp.R
 import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
 import com.pks.shoppingapp.components.ShoppingButton
 import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.wishlist.utils.DataStoreViewModel
 
 
 @Composable
@@ -55,6 +57,7 @@ fun SettingScreenUI(
 ) {
 
     val height = LocalConfiguration.current.screenHeightDp + 150
+    val dataStoreViewModel:DataStoreViewModel = hiltViewModel()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +78,11 @@ fun SettingScreenUI(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .background(color = Color.Transparent), verticalAlignment = Alignment.CenterVertically
+                    .background(color = Color.Transparent)
+                    .clickable {
+                               nav.navigate(NavDestinations.ProfileScreen)
+                    }
+                , verticalAlignment = Alignment.CenterVertically
             ) {
 
                 Image(
@@ -98,8 +105,12 @@ fun SettingScreenUI(
                     FirebaseAuth
                         .getInstance()
                         .signOut()
+
+                    dataStoreViewModel.resetFav()
+                    authenticationViewModel.emptyLoginScreenState()
+                    authenticationViewModel.onLogout()
                     nav.navigate(NavDestinations.LoginScreen){
-                        nav.popBackStack()
+                        popUpTo(NavDestinations.ShowOff) { inclusive = true }
                     }
                 })
             }

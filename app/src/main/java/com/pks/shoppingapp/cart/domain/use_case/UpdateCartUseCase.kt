@@ -7,8 +7,10 @@ import com.pks.shoppingapp.wishlist.data.WishListUploadState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class AddCartUseCase @Inject constructor(private  val cartRepo: CartRepo) {
-    suspend fun addToCart(cartModel: CartModel): Flow<ResultState<WishListUploadState>> {
-        return cartRepo.addToCart(cartModel = cartModel)
+class UpdateCartUseCase @Inject constructor(private val cartRepo: CartRepo) {
+
+    suspend fun updateCart(cartModel: CartModel): Flow<ResultState<WishListUploadState>> {
+        return cartRepo.updateCart(cartModel = cartModel)
     }
+
 }

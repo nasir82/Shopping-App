@@ -1,11 +1,12 @@
 package com.pks.shoppingapp.cart.data
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.pks.shoppingapp.cart.domain.model.CartModel
 import com.pks.shoppingapp.cart.domain.repo.CartRepo
+import com.pks.shoppingapp.cart.presentation.CartState
 import com.pks.shoppingapp.common.ResultState
-import com.pks.shoppingapp.home.domain.model.ProductModel
-import com.pks.shoppingapp.home.presentation.ProductState
 import com.pks.shoppingapp.wishlist.data.WishListUploadState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -14,16 +15,16 @@ import javax.inject.Inject
 
 class CartRepoImp @Inject constructor(private val db: FirebaseFirestore, private val auth: FirebaseAuth):
     CartRepo {
-    override suspend fun getCarts(): Flow<ResultState<ProductState>> = callbackFlow {
+    override suspend fun getCarts(): Flow<ResultState<CartState>> = callbackFlow {
         trySend(ResultState.Loading)
-        val uid = auth.currentUser!!.uid
-        db.collection("Carts").document(uid).collection("Cart").get().addOnSuccessListener {
+        val uid = auth.currentUser?.uid
+        db.collection("Carts").document(uid?: "default").collection("Cart").get().addOnSuccessListener {
             val instances = it.map{obj->
-                obj.toObject(ProductModel::class.java)
+                obj.toObject(CartModel::class.java)
             }.toList()
 
             trySend(
-                ResultState.Success(ProductState(products = instances))
+                ResultState.Success(CartState(products = instances))
             )
         }
             .addOnFailureListener {
@@ -37,10 +38,45 @@ class CartRepoImp @Inject constructor(private val db: FirebaseFirestore, private
         }
     }
 
-    override suspend fun addToCart(productModel: ProductModel): Flow<ResultState<WishListUploadState>> =
+    override suspend fun addToCart(productModel: CartModel): Flow<ResultState<WishListUploadState>> =
         callbackFlow {
         trySend(ResultState.Loading)
         db.collection("Carts").document(auth.currentUser!!.uid).collection("Cart").document(productModel.id).set(productModel).addOnSuccessListener {
+            Log.d("isAvailable",productModel.toString())
+            trySend(ResultState.Success(WishListUploadState(isLoaded = true )))
+        }
+            .addOnFailureListener {
+                trySend(ResultState.Error(message = it.message.toString()))
+            }
+        awaitClose{
+            close()
+        }
+
+    }
+    override suspend fun updateCart(cartModel: CartModel): Flow<ResultState<WishListUploadState>> =
+        callbackFlow {
+        trySend(ResultState.Loading)
+        db.collection("Carts").document(auth.currentUser!!.uid).collection("Cart").document(cartModel.id).update(
+            mapOf(
+            "quantity" to cartModel.quantity
+            )).addOnSuccessListener {
+            Log.d("isAvailable in repo",cartModel.toString())
+            trySend(ResultState.Success(WishListUploadState(isLoaded = true )))
+        }
+            .addOnFailureListener {
+                trySend(ResultState.Error(message = it.message.toString()))
+            }
+        awaitClose{
+            close()
+        }
+
+    }
+    override suspend fun removeCart(id: String): Flow<ResultState<WishListUploadState>> =
+        callbackFlow {
+        trySend(ResultState.Loading)
+        db.collection("Carts").document(auth.currentUser!!.uid).collection("Cart").document(id).delete(
+           ).addOnSuccessListener {
+            Log.d("isAvailable in repo",id.toString())
             trySend(ResultState.Success(WishListUploadState(isLoaded = true )))
         }
             .addOnFailureListener {

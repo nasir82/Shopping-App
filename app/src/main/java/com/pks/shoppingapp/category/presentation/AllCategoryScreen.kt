@@ -1,6 +1,7 @@
 package com.pks.shoppingapp.category.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,19 +26,22 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.pks.shoppingapp.components.CategoryCart
 import com.pks.shoppingapp.home.presentation.HomeViewModel
+import com.pks.shoppingapp.navigation.NavDestinations
 
 
 @Composable
-fun ALlCategoryScreenUi(nav:NavHostController,homeViewModel: HomeViewModel) {
+fun ALlCategoryScreenUi(nav: NavHostController, homeViewModel: HomeViewModel) {
 
     val state = homeViewModel.categoryState.collectAsState().value
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(color = MaterialTheme.colorScheme.background)
-        .padding(horizontal = 8.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+            .padding(horizontal = 8.dp)
+    ) {
         Spacer(modifier = Modifier.height(35.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { nav.popBackStack()  }) {
+            IconButton(onClick = { nav.popBackStack() }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = "",
@@ -46,13 +50,27 @@ fun ALlCategoryScreenUi(nav:NavHostController,homeViewModel: HomeViewModel) {
                     tint = MaterialTheme.colorScheme.onBackground
                 )
             }
-            Text(text = "All categories", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+            Text(
+                text = "All categories",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
 
-            itemsIndexed(state.categories){ ind,item->
-                CategoryCart(index = ind, category = item)
+            itemsIndexed(state.categories) { ind, item ->
+                CategoryCart( category = item){
+                    nav.navigate(
+                        NavDestinations.CategoryBasedProducts(
+                            categoryName = item.id
+                        )
+                    )
+                }
             }
         }
     }

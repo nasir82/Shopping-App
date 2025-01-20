@@ -1,5 +1,6 @@
 package com.pks.shoppingapp.authentication.presentation
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,7 @@ import com.pks.shoppingapp.authentication.presentation.profile.ProfileScreenStat
 import com.pks.shoppingapp.authentication.presentation.profile.UpdateUserDataState
 import com.pks.shoppingapp.authentication.presentation.signup.SignupScreenState
 import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.wishlist.utils.DataStoreModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +29,8 @@ class AuthenticationViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val updateUserDataUseCase: UpdateUserUseCase,
     private val signInUseCase:SignInUseCase,
-    private val auth:FirebaseAuth
+    private val auth:FirebaseAuth,
+    private val context: Context
 
 ) : ViewModel() {
     private val _signupScreenState = MutableStateFlow(SignupScreenState())
@@ -81,12 +84,17 @@ class AuthenticationViewModel @Inject constructor(
 
                     is ResultState.Success -> {
                         _loginScreenState.value = SignupScreenState(userData = it.data)
+                        onLoginSuccess(auth.currentUser!!.uid)
                     }
                 }
             }
         }
 
     }
+    fun emptyLoginScreenState(){
+        _loginScreenState.value = SignupScreenState()
+    }
+
 
     fun getUserByUid(uid: String) {
         viewModelScope.launch {
@@ -148,6 +156,18 @@ class AuthenticationViewModel @Inject constructor(
     }
     fun alter(){
         _loginScreenState.value = SignupScreenState()
+    }
+
+    fun clearLoginScreen(){
+        _loginScreenState.value = SignupScreenState()
+    }
+
+    fun onLoginSuccess(uid: String) {
+        DataStoreModule.initializeDataStore(context, uid)
+    }
+
+    fun onLogout() {
+        DataStoreModule.clearDataStore()
     }
 
 }

@@ -36,15 +36,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pks.shoppingapp.home.domain.model.ProductModel
+import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.products.presentation.DetailsViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
 @Composable
-fun MultiItemCarouselWithIndicator(items:List<ProductModel>) {
+fun MultiItemCarouselWithIndicator(items:List<ProductModel>,nav:NavHostController,detailsViewModel:DetailsViewModel) {
 //    val items = listOf(
 //        R.drawable.img,
 //        R.drawable.ic_google,
@@ -95,15 +98,18 @@ fun MultiItemCarouselWithIndicator(items:List<ProductModel>) {
                 Card(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
+                        .padding(end = 10.dp)
                         .width(100.dp)
                         .height(120.dp)
                         .clickable {
                             coroutineScope.launch {
                                 listState.animateScrollToItem(index)
                                 fractionScrolled.value = (index - firstVisibleItemIndex.dp.value) * 1.0f
+                                detailsViewModel.setProduct(item)
+                                detailsViewModel.resetSelectedAttribute()
+                                nav.navigate(NavDestinations.ProductDetailsScreen(productId = item.id))
                             }
-                        }
-                        .padding(end = 10.dp, top = 5.dp, bottom = 5.dp),
+                        },
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(5.dp)
                 ) {

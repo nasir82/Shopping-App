@@ -25,15 +25,28 @@ import com.pks.shoppingapp.cart.presentation.CartViewModel
 import com.pks.shoppingapp.home.presentation.HomeScreenUi
 import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.navigation.navItemList
+import com.pks.shoppingapp.products.presentation.DetailsViewModel
 import com.pks.shoppingapp.wishlist.presentation.WishListScreenUI
 import com.pks.shoppingapp.wishlist.presentation.WishListViewModel
+import com.pks.shoppingapp.wishlist.utils.DataStoreViewModel
 
 @Composable
-fun ShowOff(nav:NavHostController,auth: FirebaseAuth,homeViewModel: HomeViewModel,authenticationViewModel: AuthenticationViewModel,wishListViewModel: WishListViewModel,cartViewModel: CartViewModel) {
+fun ShowOff(
+    nav: NavHostController,
+    auth: FirebaseAuth,
+    homeViewModel: HomeViewModel,
+    authenticationViewModel: AuthenticationViewModel,
+    wishListViewModel: WishListViewModel,
+    cartViewModel: CartViewModel,
+    detailsViewModel: DetailsViewModel,
+    dataStoreViewModel: DataStoreViewModel
+) {
 
     val selectedScreen = remember {
         mutableIntStateOf(0)
     }
+
+
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -63,18 +76,30 @@ fun ShowOff(nav:NavHostController,auth: FirebaseAuth,homeViewModel: HomeViewMode
 
             }
         }
-    ) {
-        inPad->
+    ) { inPad ->
         inPad
-        Box(modifier = Modifier
-            .fillMaxSize()
-        ){
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
 
-            when(selectedScreen.intValue){
-                0 -> HomeScreenUi(nav = nav, homeViewmodel = homeViewModel)
-                1 -> WishListScreenUI(nav = nav, viewModel = homeViewModel, wishListViewModel = wishListViewModel)
-                2-> CartScreenUI(cartViewModel = cartViewModel)
-                3 -> SettingScreenUI(nav = nav,authenticationViewModel = authenticationViewModel)
+            when (selectedScreen.intValue) {
+                0 -> HomeScreenUi(
+                    nav = nav,
+                    homeViewmodel = homeViewModel,
+                    detailsViewModel = detailsViewModel,
+                    dataStoreViewModel
+                )
+
+                1 -> WishListScreenUI(
+                    nav = nav,
+                    viewModel = homeViewModel,
+                    wishListViewModel = wishListViewModel,
+                    detailsViewModel = detailsViewModel
+                )
+
+                2 -> CartScreenUI(nav,cartViewModel = cartViewModel)
+                3 -> SettingScreenUI(nav = nav, authenticationViewModel = authenticationViewModel)
             }
         }
 
