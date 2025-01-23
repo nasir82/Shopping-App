@@ -16,3 +16,4 @@ local.properties
 /google-services.json
 .json
 
+app/google-services.json

@@ -33,6 +33,8 @@ sealed class NavDestinations {
     data object CartScreen : NavDestinations()
     @Serializable
     data object CheckOut : NavDestinations()
+    @Serializable
+    data object PaymentGateway : NavDestinations()
 
     @Serializable
     data class ProductDetailsScreen(val productId:String) : NavDestinations()

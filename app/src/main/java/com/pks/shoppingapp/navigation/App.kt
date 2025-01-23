@@ -19,6 +19,7 @@ import com.pks.shoppingapp.category.presentation.ALlCategoryScreenUi
 import com.pks.shoppingapp.checkout.CheckOut
 import com.pks.shoppingapp.home.presentation.HomeScreenUi
 import com.pks.shoppingapp.home.presentation.HomeViewModel
+import com.pks.shoppingapp.paymentgateway.PaymentScreen
 import com.pks.shoppingapp.products.presentation.AllProductScreen
 import com.pks.shoppingapp.products.presentation.CategoryBasedProduct
 import com.pks.shoppingapp.products.presentation.DetailsScreen
@@ -100,6 +101,10 @@ fun AppNav(firebaseAuth: FirebaseAuth, homeViewModel: HomeViewModel) {
                 CheckOut(nav ,cartViewModel = cartViewModel)
             }
 
+             composable<NavDestinations.PaymentGateway> {
+                 PaymentScreen(nav = nav)
+                        }
+            
 
             composable<NavDestinations.AllCategory> {
                 ALlCategoryScreenUi(nav = nav, homeViewModel = homeViewModel)

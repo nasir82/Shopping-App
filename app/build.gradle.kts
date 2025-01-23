@@ -53,6 +53,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
@@ -85,4 +86,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("com.google.accompanist:accompanist-flowlayout:0.36.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+
 }
