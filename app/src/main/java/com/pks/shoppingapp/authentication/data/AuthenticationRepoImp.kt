@@ -7,7 +7,7 @@ import com.pks.shoppingapp.authentication.domain.model.UserData
 import com.pks.shoppingapp.authentication.domain.repo.AuthenticationRepo
 import com.pks.shoppingapp.authentication.presentation.profile.ProfileScreenState
 import com.pks.shoppingapp.authentication.presentation.profile.UpdateUserDataState
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

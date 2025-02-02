@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.pks.shoppingapp.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
 import com.pks.shoppingapp.navigation.NavDestinations
 
 @Composable

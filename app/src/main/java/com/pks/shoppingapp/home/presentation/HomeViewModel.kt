@@ -3,7 +3,7 @@ package com.pks.shoppingapp.home.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.home.domain.model.ProductModel
 import com.pks.shoppingapp.home.domain.use_case.GetCategoriesUseCase
 import com.pks.shoppingapp.home.domain.use_case.GetProductsUseCase

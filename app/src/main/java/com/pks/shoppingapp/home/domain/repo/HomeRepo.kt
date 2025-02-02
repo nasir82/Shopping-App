@@ -1,6 +1,6 @@
 package com.pks.shoppingapp.home.domain.repo
 
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.home.presentation.CategoryState
 import com.pks.shoppingapp.home.presentation.ProductState
 import kotlinx.coroutines.flow.Flow

@@ -1,5 +1,6 @@
 package com.pks.shoppingapp.products.presentation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,17 +16,23 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.pks.shoppingapp.components.SearchBar
+import com.pks.shoppingapp.R
+import com.pks.shoppingapp.core.presentation.components.SearchBar
 import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.home.presentation.ProductCart
 import com.pks.shoppingapp.navigation.NavDestinations
@@ -47,12 +54,7 @@ fun AllProductScreen(nav: NavHostController, viewModel: HomeViewModel,detailsVie
                 .padding(horizontal = 8.dp)
         ) {
             Spacer(modifier = Modifier.height(40.dp))
-            Text(
-                text = "Products",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Spacer(modifier = Modifier.height(10.dp))
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Default.ArrowBackIosNew,
@@ -66,10 +68,19 @@ fun AllProductScreen(nav: NavHostController, viewModel: HomeViewModel,detailsVie
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = "See your favourite one",
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = "Products",
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = {
+                    nav.navigate(NavDestinations.Gemini)
+                }) {
+                    Image(painterResource(id = R.drawable.gemini), contentDescription ="",modifier = Modifier
+                        .size(32.dp)
+                        .clip(shape = CircleShape), contentScale = ContentScale.Crop)
+                }
+
             }
             Spacer(modifier = Modifier.height(10.dp))
             Row(modifier = Modifier.padding(horizontal = 8.dp)) {

@@ -10,8 +10,8 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.pks.shoppingapp.home.presentation.HomeViewModel
-import com.pks.shoppingapp.ui.theme.ShoppingAppTheme
 import com.pks.shoppingapp.navigation.AppNav
+import com.pks.shoppingapp.ui.theme.ShoppingAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -31,7 +31,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ShoppingAppTheme {
-//              App(firebaseAuth=firebaseAuth)
+                /**
+                 * Fetch homepage product using home viewmodel initialization
+                 */
                 val homeViewModel:HomeViewModel = hiltViewModel()
                 AppNav(firebaseAuth = firebaseAuth,homeViewModel=homeViewModel)
             }

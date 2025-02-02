@@ -3,7 +3,7 @@ package com.pks.shoppingapp.wishlist.data
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.home.domain.model.ProductModel
 import com.pks.shoppingapp.home.presentation.ProductState
 import com.pks.shoppingapp.wishlist.domain.repo.WishListRepo

@@ -35,8 +35,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pks.shoppingapp.cart.presentation.CartViewModel
-import com.pks.shoppingapp.components.SectionHeading
-import com.pks.shoppingapp.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.SectionHeading
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
 import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.home.presentation.calculate_discount
 import com.pks.shoppingapp.products.presentation.components.ProductAttribute

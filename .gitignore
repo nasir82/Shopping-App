@@ -13,6 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-/google-services.json
-app/src/google-services.json
-.json
+app/google-services.json
+app/src/main/java/com/pks/shoppingapp/env.kt

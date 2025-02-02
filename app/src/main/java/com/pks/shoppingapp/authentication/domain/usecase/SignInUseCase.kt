@@ -1,7 +1,7 @@
 package com.pks.shoppingapp.authentication.domain.usecase
 
 import com.pks.shoppingapp.authentication.domain.repo.AuthenticationRepo
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

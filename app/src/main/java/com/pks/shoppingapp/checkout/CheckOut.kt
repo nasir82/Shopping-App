@@ -29,6 +29,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,14 +38,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pks.shoppingapp.cart.domain.model.CartModel
 import com.pks.shoppingapp.cart.presentation.CartViewModel
-import com.pks.shoppingapp.components.SectionHeading
-import com.pks.shoppingapp.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.ChangePaymentMethod
+import com.pks.shoppingapp.core.presentation.components.SectionHeadingWithComposable
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
 import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.personalization.address.presentation.AddressViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,9 +93,6 @@ fun CheckOut(nav: NavHostController, cartViewModel: CartViewModel) {
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
-
-
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -110,123 +112,12 @@ fun CheckOut(nav: NavHostController, cartViewModel: CartViewModel) {
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .background(
-                            color = MaterialTheme.colorScheme.surface,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                ) {
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 5.dp)) {
-                       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                           Text(
-                               text = "subtotal",
-                               style = MaterialTheme.typography.bodyMedium,
-                               color = MaterialTheme.colorScheme.onBackground
-                           )
-
-                           Text(text = "\$850")
-                       }
-                       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                           Text(
-                               text = "Delivery cost",
-                               style = MaterialTheme.typography.bodyMedium,
-                               color = MaterialTheme.colorScheme.onBackground
-                           )
-
-                           Text(text = "\$50")
-                       }
-                       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                           Text(
-                               text = "Vat",
-                               style = MaterialTheme.typography.bodyMedium,
-                               color = MaterialTheme.colorScheme.onBackground
-                           )
-
-                           Text(text = "\$50")
-                       }
-                       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                           Text(
-                               text = "Total",
-                               style = MaterialTheme.typography.bodyMedium,
-                               color = MaterialTheme.colorScheme.onBackground
-                           )
-
-                           Text(text = "\$950")
-                       }
-
-
-
-                    }
-                }
+                CashWithAdditionalCharges(cartViewModel = cartViewModel)
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .background(
-                            color = MaterialTheme.colorScheme.surface,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                ) {
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 5.dp)) {
-                        SectionHeading(title = "Address", text = "Change") {
-
-                        }
-                        Text(
-                            text = "Md. Nasir Uddin ",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Text(
-                            text = "01731812645 ",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Text(
-                            text = "SustGate, Akhalia, Sylhet. ",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-
-                    }
-                }
+                Addresses()
                 Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .background(
-                            color = MaterialTheme.colorScheme.surface,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                ) {
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 5.dp)) {
-                        SectionHeading(title = "Payment Method", text = "Change") {
-
-                        }
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            Icon(imageVector = Icons.Default.Payment, contentDescription = "")
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = "Paypal",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-
-                    }
-                }
-               
+                PaymentMethods()
                 Spacer(modifier = Modifier.height(10.dp))
                 ShoppingButton(text = "Pay Now") {
                     nav.navigate(NavDestinations.PaymentGateway)
@@ -269,5 +160,148 @@ fun CheckoutCard(cartItem: CartModel) {
 
         }
 
+    }
+}
+
+@Composable
+fun CashWithAdditionalCharges(cartViewModel: CartViewModel) {
+    val subTotal = cartViewModel.totalCost.collectAsState().value
+
+    val vat = subTotal * 0.1
+    val deliverCharge = 120
+
+    val total = subTotal+ vat + deliverCharge
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(shape = RoundedCornerShape(8.dp))
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 5.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "subtotal",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Text(text = "\$$subTotal")
+            }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "Delivery cost",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Text(text = "\$$deliverCharge")
+            }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "Vat",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Text(text = "\$$vat")
+            }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "Total",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Text(text = "\$$total")
+            }
+
+
+
+        }
+    }
+}
+
+@Composable
+fun Addresses(modifier: Modifier = Modifier) {
+    val addressViewModel: AddressViewModel = hiltViewModel()
+    val currentAddress = remember {
+        mutableStateOf(addressViewModel.addresses[0])
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(shape = RoundedCornerShape(8.dp))
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 5.dp)) {
+            SectionHeadingWithComposable(title = "Address", text = "Change"){
+                currentAddress.value = it
+            }
+            Text(
+                text = currentAddress.value.name,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = currentAddress.value.phoneNumber,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = currentAddress.value.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+        }
+    }
+}
+@Composable
+fun PaymentMethods(modifier: Modifier = Modifier) {
+    val paymentViewModel:PaymentViewModel = hiltViewModel()
+    val currentMethod = remember {
+        mutableStateOf(paymentViewModel.paymentMethods[0])
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(shape = RoundedCornerShape(8.dp))
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 5.dp)) {
+            ChangePaymentMethod(title = "Address", text = "Change"){
+                currentMethod.value = it
+            }
+
+            Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)){
+                Icon(imageVector = Icons.Default.Payment, contentDescription = "")
+                Text(
+                    text = currentMethod.value.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+        }
     }
 }

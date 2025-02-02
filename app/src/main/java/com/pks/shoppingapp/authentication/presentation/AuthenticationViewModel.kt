@@ -14,7 +14,7 @@ import com.pks.shoppingapp.authentication.domain.usecase.UpdateUserUseCase
 import com.pks.shoppingapp.authentication.presentation.profile.ProfileScreenState
 import com.pks.shoppingapp.authentication.presentation.profile.UpdateUserDataState
 import com.pks.shoppingapp.authentication.presentation.signup.SignupScreenState
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.wishlist.utils.DataStoreModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

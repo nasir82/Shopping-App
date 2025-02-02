@@ -2,7 +2,7 @@ package com.pks.shoppingapp.wishlist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.home.domain.model.ProductModel
 import com.pks.shoppingapp.home.presentation.ProductState
 import com.pks.shoppingapp.wishlist.data.WishListUploadState

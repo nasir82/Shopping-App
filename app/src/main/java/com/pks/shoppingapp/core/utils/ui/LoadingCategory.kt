@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.pks.shoppingapp.components.shimmerEffect
+import com.pks.shoppingapp.core.presentation.components.shimmerEffect
 
 @Composable
 fun LoadingCategory(modifier: Modifier = Modifier) {

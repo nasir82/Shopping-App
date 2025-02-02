@@ -44,7 +44,8 @@ import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.pks.shoppingapp.R
 import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
-import com.pks.shoppingapp.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.SectionHeading
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
 import com.pks.shoppingapp.navigation.NavDestinations
 import com.pks.shoppingapp.wishlist.utils.DataStoreViewModel
 
@@ -80,7 +81,7 @@ fun SettingScreenUI(
                     .fillMaxWidth()
                     .background(color = Color.Transparent)
                     .clickable {
-                               nav.navigate(NavDestinations.ProfileScreen)
+                        nav.navigate(NavDestinations.ProfileScreen)
                     }
                 , verticalAlignment = Alignment.CenterVertically
             ) {
@@ -131,24 +132,27 @@ fun SettingScreenUI(
             ) {
 
                 Spacer(modifier = Modifier.height(40.dp))
-                Text(
-                    text = "Account Setting",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                SectionHeading(title = "Account Setting", text = ""){
+
+                }
                 Spacer(modifier = Modifier.height(16.dp))
 
                 AccountItems(
                     title = "Address",
                     subtitle = "",
                     imageVector = Icons.Default.LocationOn
-                )
+                ){
+                    nav.navigate(NavDestinations.AddressScreen)
+                }
                 Spacer(modifier = Modifier.height(12.dp))
                 AccountItems(
                     title = "My Order",
                     subtitle = "",
                     imageVector = Icons.Default.ShoppingBag
-                )
+                ){
+                    nav.navigate(NavDestinations.Orders)
+                }
+
                 Spacer(modifier = Modifier.height(12.dp))
                 AccountItems(
                     title = "Bank Account",
@@ -201,10 +205,13 @@ fun AccountItems(
     modifier: Modifier = Modifier.fillMaxWidth(),
     icon: Boolean = false,
     title: String,
-    subtitle: String,
-    imageVector: ImageVector
+    subtitle: String="",
+    imageVector: ImageVector,
+    onClick:()->Unit={}
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = modifier.clickable {
+                   onClick.invoke()
+    }, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             imageVector = imageVector,
             contentDescription = "",

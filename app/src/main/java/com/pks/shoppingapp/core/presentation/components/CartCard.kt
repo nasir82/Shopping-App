@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.components
+package com.pks.shoppingapp.core.presentation.components
 
 //
 //@Composable

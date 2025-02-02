@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.pks.shoppingapp.components.CategoryCart
+import com.pks.shoppingapp.core.presentation.components.CategoryCart
 import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.navigation.NavDestinations
 

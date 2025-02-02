@@ -48,12 +48,20 @@ sealed class NavDestinations {
     @Serializable
     data object AllCategory : NavDestinations()
 
+    @Serializable
+    data object Orders : NavDestinations()
+    @Serializable
+    data object Gemini : NavDestinations()
+
 
     @Serializable
     data object ShowOff : NavDestinations()
 
     @Serializable
     data class CategoryBasedProducts(val categoryName: String) : NavDestinations()
+
+    @Serializable
+    data object AddressScreen : NavDestinations()
 
 
 }

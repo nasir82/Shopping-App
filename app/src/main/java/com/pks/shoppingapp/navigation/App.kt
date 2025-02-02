@@ -17,9 +17,12 @@ import com.pks.shoppingapp.cart.presentation.CartScreenUI
 import com.pks.shoppingapp.cart.presentation.CartViewModel
 import com.pks.shoppingapp.category.presentation.ALlCategoryScreenUi
 import com.pks.shoppingapp.checkout.CheckOut
+import com.pks.shoppingapp.gemini.GeminiChatScreen
 import com.pks.shoppingapp.home.presentation.HomeScreenUi
 import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.paymentgateway.PaymentScreen
+import com.pks.shoppingapp.personalization.address.presentation.AddressScreen
+import com.pks.shoppingapp.personalization.orders.presentation.OrderScreen
 import com.pks.shoppingapp.products.presentation.AllProductScreen
 import com.pks.shoppingapp.products.presentation.CategoryBasedProduct
 import com.pks.shoppingapp.products.presentation.DetailsScreen
@@ -29,6 +32,13 @@ import com.pks.shoppingapp.wishlist.presentation.WishListScreenUI
 import com.pks.shoppingapp.wishlist.presentation.WishListViewModel
 import com.pks.shoppingapp.wishlist.utils.DataStoreViewModel
 
+
+/**
+ * Navigation
+ *
+ * initializing the viewmodels classes
+ * checking whether login or not
+ */
 @Composable
 fun AppNav(firebaseAuth: FirebaseAuth, homeViewModel: HomeViewModel) {
     val nav = rememberNavController()
@@ -36,6 +46,7 @@ fun AppNav(firebaseAuth: FirebaseAuth, homeViewModel: HomeViewModel) {
     val cartViewModel: CartViewModel = hiltViewModel()
     val wishListViewModel: WishListViewModel = hiltViewModel()
     val detailsViewModel: DetailsViewModel = hiltViewModel()
+    // if already login go to home page
     val startDestination =
         if (firebaseAuth.currentUser != null) SubNav.MainHomeScreen else SubNav.LoginSignUpScreen
     if (firebaseAuth.currentUser != null) {
@@ -99,6 +110,18 @@ fun AppNav(firebaseAuth: FirebaseAuth, homeViewModel: HomeViewModel) {
 
             composable<NavDestinations.CheckOut> {
                 CheckOut(nav ,cartViewModel = cartViewModel)
+            }
+            composable<NavDestinations.AddressScreen> {
+                AddressScreen()
+            }
+            composable<NavDestinations.AddressScreen> {
+                AddressScreen()
+            }
+            composable<NavDestinations.Orders> {
+                OrderScreen()
+            }
+            composable<NavDestinations.Gemini> {
+                GeminiChatScreen()
             }
 
              composable<NavDestinations.PaymentGateway> {

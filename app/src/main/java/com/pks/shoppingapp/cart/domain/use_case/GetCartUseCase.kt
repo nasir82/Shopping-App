@@ -2,8 +2,7 @@ package com.pks.shoppingapp.cart.domain.use_case
 
 import com.pks.shoppingapp.cart.domain.repo.CartRepo
 import com.pks.shoppingapp.cart.presentation.CartState
-import com.pks.shoppingapp.common.ResultState
-import com.pks.shoppingapp.home.presentation.ProductState
+import com.pks.shoppingapp.core.presentation.ResultState
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

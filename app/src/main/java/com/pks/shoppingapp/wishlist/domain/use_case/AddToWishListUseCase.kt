@@ -1,6 +1,6 @@
 package com.pks.shoppingapp.wishlist.domain.use_case
 
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.home.domain.model.ProductModel
 import com.pks.shoppingapp.wishlist.data.WishListUploadState
 import com.pks.shoppingapp.wishlist.domain.repo.WishListRepo

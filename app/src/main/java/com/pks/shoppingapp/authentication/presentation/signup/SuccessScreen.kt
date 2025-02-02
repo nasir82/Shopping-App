@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.pks.shoppingapp.R
-import com.pks.shoppingapp.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
 import com.pks.shoppingapp.navigation.NavDestinations
 
 

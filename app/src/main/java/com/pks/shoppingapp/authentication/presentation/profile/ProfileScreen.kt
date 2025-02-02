@@ -37,8 +37,8 @@ import com.pks.shoppingapp.R
 import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
 import com.pks.shoppingapp.authentication.presentation.signup.HrSpacer
 import com.pks.shoppingapp.authentication.presentation.signup.ShoppingAlertDialog
-import com.pks.shoppingapp.components.ShoppingButton
-import com.pks.shoppingapp.components.ShoppingTextField2
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.ShoppingTextField2
 import com.pks.shoppingapp.navigation.NavDestinations
 
 @Composable

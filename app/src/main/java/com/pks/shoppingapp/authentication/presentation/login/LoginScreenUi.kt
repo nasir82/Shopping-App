@@ -39,10 +39,10 @@ import com.pks.shoppingapp.R
 import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
 import com.pks.shoppingapp.authentication.presentation.signup.HrSpacer
 import com.pks.shoppingapp.cart.presentation.CartViewModel
-import com.pks.shoppingapp.components.DividerWithText
-import com.pks.shoppingapp.components.LoginWithSocialMedia
-import com.pks.shoppingapp.components.ShoppingButton
-import com.pks.shoppingapp.components.ShoppingTextField
+import com.pks.shoppingapp.core.presentation.components.DividerWithText
+import com.pks.shoppingapp.core.presentation.components.LoginWithSocialMedia
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.ShoppingTextField
 import com.pks.shoppingapp.navigation.NavDestinations
 import com.pks.shoppingapp.wishlist.presentation.WishListViewModel
 

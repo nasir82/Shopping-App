@@ -43,8 +43,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pks.shoppingapp.cart.domain.model.CartModel
-import com.pks.shoppingapp.components.ShoppingButton
-import com.pks.shoppingapp.components.shimmerEffect
+import com.pks.shoppingapp.core.presentation.components.ShoppingButton
+import com.pks.shoppingapp.core.presentation.components.shimmerEffect
 import com.pks.shoppingapp.navigation.NavDestinations
 
 

@@ -8,7 +8,7 @@ import com.pks.shoppingapp.cart.domain.use_case.AddCartUseCase
 import com.pks.shoppingapp.cart.domain.use_case.GetCartUseCase
 import com.pks.shoppingapp.cart.domain.use_case.RemoveCartUserCase
 import com.pks.shoppingapp.cart.domain.use_case.UpdateCartUseCase
-import com.pks.shoppingapp.common.ResultState
+import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.home.domain.model.ProductModel
 import com.pks.shoppingapp.home.domain.model.ProductVariationsModel
 import com.pks.shoppingapp.wishlist.data.WishListUploadState

@@ -52,10 +52,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.pks.shoppingapp.components.MultiItemCarouselWithIndicator
-import com.pks.shoppingapp.components.SearchBar
-import com.pks.shoppingapp.components.SectionHeading
-import com.pks.shoppingapp.components.shimmerEffect
+import com.pks.shoppingapp.core.presentation.components.MultiItemCarouselWithIndicator
+import com.pks.shoppingapp.core.presentation.components.SearchBar
+import com.pks.shoppingapp.core.presentation.components.SectionHeading
+import com.pks.shoppingapp.core.presentation.components.shimmerEffect
 import com.pks.shoppingapp.core.utils.ui.LoadingCategory
 import com.pks.shoppingapp.home.domain.model.ProductModel
 import com.pks.shoppingapp.navigation.NavDestinations
