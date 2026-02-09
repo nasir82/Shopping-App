@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.navigation
+package com.pks.shoppingapp.core.navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -21,7 +21,9 @@ import com.pks.shoppingapp.gemini.GeminiChatScreen
 import com.pks.shoppingapp.home.presentation.HomeScreenUi
 import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.paymentgateway.PaymentScreen
+import com.pks.shoppingapp.personalization.address.presentation.AddAddressScreen
 import com.pks.shoppingapp.personalization.address.presentation.AddressScreen
+import com.pks.shoppingapp.personalization.address.presentation.AddressViewModel
 import com.pks.shoppingapp.personalization.orders.presentation.OrderScreen
 import com.pks.shoppingapp.products.presentation.AllProductScreen
 import com.pks.shoppingapp.products.presentation.CategoryBasedProduct
@@ -46,6 +48,7 @@ fun AppNav(firebaseAuth: FirebaseAuth, homeViewModel: HomeViewModel) {
     val cartViewModel: CartViewModel = hiltViewModel()
     val wishListViewModel: WishListViewModel = hiltViewModel()
     val detailsViewModel: DetailsViewModel = hiltViewModel()
+    val addressViewModel: AddressViewModel = hiltViewModel()
     // if already login go to home page
     val startDestination =
         if (firebaseAuth.currentUser != null) SubNav.MainHomeScreen else SubNav.LoginSignUpScreen
@@ -99,8 +102,6 @@ fun AppNav(firebaseAuth: FirebaseAuth, homeViewModel: HomeViewModel) {
             composable<NavDestinations.WishListScreen> {
                 WishListScreenUI(
                     nav = nav,
-                    viewModel = homeViewModel,
-                    wishListViewModel = wishListViewModel,
                     detailsViewModel = detailsViewModel
                 )
             }
@@ -112,13 +113,13 @@ fun AppNav(firebaseAuth: FirebaseAuth, homeViewModel: HomeViewModel) {
                 CheckOut(nav ,cartViewModel = cartViewModel)
             }
             composable<NavDestinations.AddressScreen> {
-                AddressScreen()
+                AddressScreen(nav = nav, viewModel = addressViewModel)
             }
-            composable<NavDestinations.AddressScreen> {
-                AddressScreen()
+            composable<NavDestinations.AddAddress> {
+                AddAddressScreen(viewModel = addressViewModel, nav = nav)
             }
             composable<NavDestinations.Orders> {
-                OrderScreen()
+                OrderScreen(nav=nav)
             }
             composable<NavDestinations.Gemini> {
                 GeminiChatScreen()

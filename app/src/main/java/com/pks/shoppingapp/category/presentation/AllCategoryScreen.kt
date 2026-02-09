@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.pks.shoppingapp.core.presentation.components.CategoryCart
 import com.pks.shoppingapp.home.presentation.HomeViewModel
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 
 
 @Composable

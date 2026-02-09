@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.pks.shoppingapp.R
 import com.pks.shoppingapp.core.presentation.components.ShoppingButton
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 
 
 

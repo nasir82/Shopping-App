@@ -35,7 +35,7 @@ import com.pks.shoppingapp.R
 import com.pks.shoppingapp.core.presentation.components.SearchBar
 import com.pks.shoppingapp.home.presentation.HomeViewModel
 import com.pks.shoppingapp.home.presentation.ProductCart
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 import com.pks.shoppingapp.wishlist.utils.DataStoreViewModel
 
 

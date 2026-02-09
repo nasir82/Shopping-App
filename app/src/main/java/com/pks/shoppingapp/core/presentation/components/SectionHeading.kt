@@ -52,7 +52,7 @@ fun SectionHeading(title: String, text: String, onClick: () -> Unit = {}) {
         }) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }

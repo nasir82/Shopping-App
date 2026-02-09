@@ -24,7 +24,7 @@ import com.pks.shoppingapp.cart.presentation.CartScreenUI
 import com.pks.shoppingapp.cart.presentation.CartViewModel
 import com.pks.shoppingapp.home.presentation.HomeScreenUi
 import com.pks.shoppingapp.home.presentation.HomeViewModel
-import com.pks.shoppingapp.navigation.navItemList
+import com.pks.shoppingapp.core.navigation.navItemList
 import com.pks.shoppingapp.products.presentation.DetailsViewModel
 import com.pks.shoppingapp.wishlist.presentation.WishListScreenUI
 import com.pks.shoppingapp.wishlist.presentation.WishListViewModel
@@ -93,8 +93,6 @@ fun ShowOff(
 
                 1 -> WishListScreenUI(
                     nav = nav,
-                    viewModel = homeViewModel,
-                    wishListViewModel = wishListViewModel,
                     detailsViewModel = detailsViewModel
                 )
 

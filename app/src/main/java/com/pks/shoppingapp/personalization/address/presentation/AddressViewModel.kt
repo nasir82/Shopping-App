@@ -25,6 +25,9 @@ class AddressViewModel @Inject constructor(val addAddressUseCase: AddAddressUseC
 
     private val _addressState = MutableStateFlow(AddressState())
     val addressState = _addressState.asStateFlow()
+
+    private val _addAddressState = MutableStateFlow(AddressAddingState())
+    val addAddressState = _addAddressState.asStateFlow()
     init {
         getAddress()
     }
@@ -58,25 +61,29 @@ class AddressViewModel @Inject constructor(val addAddressUseCase: AddAddressUseC
            addAddressUseCase.addAddress(address).collectLatest {
                when (it) {
                    is ResultState.Error -> {
-
+                        _addAddressState.value = AddressAddingState(errorMessage = it.message)
                    }
 
                    ResultState.Loading -> {
-                      // _addressState.value = AddressState(isLoading = true)
+                      _addAddressState.value = AddressAddingState(isLoading = true)
                    }
 
                    is ResultState.Success -> {
-                       //statusList.value  = it.data.data ?: emptyList()
                        var list = _addressState.value.userAddresses.toMutableList()
                        list.add(address)
                        _addressState.value = AddressState(userAddresses = list)
-                       println(_addressState.value)
+                       _addAddressState.value = AddressAddingState(isSuccess = true)
 
                    }
                }
            }
 
         }
+    }
+
+
+    fun resetAddAddressState(){
+        _addAddressState.value = AddressAddingState()
     }
 
 }

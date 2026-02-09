@@ -77,7 +77,7 @@ fun CategoryCart(category: CategoryModel, onClick: () -> Unit = {}) {
 
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = category.name,
+                    text = category.name.uppercase(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodyMedium,

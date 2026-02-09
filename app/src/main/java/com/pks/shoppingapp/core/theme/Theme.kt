@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.ui.theme
+package com.pks.shoppingapp.core.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

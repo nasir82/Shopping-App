@@ -7,3 +7,9 @@ data class AddressState(
     val errorMessage:String? = null,
     val userAddresses: List<AddressModel> = emptyList()
 )
+
+data class AddressAddingState(
+    val isLoading: Boolean = false,
+    val errorMessage:String? = null,
+    val isSuccess: Boolean = false
+)

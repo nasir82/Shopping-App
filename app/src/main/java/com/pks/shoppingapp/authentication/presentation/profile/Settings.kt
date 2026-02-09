@@ -3,6 +3,7 @@ package com.pks.shoppingapp.authentication.presentation.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -46,7 +48,7 @@ import com.pks.shoppingapp.R
 import com.pks.shoppingapp.authentication.presentation.AuthenticationViewModel
 import com.pks.shoppingapp.core.presentation.components.SectionHeading
 import com.pks.shoppingapp.core.presentation.components.ShoppingButton
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 import com.pks.shoppingapp.wishlist.utils.DataStoreViewModel
 
 
@@ -60,7 +62,7 @@ fun SettingScreenUI(
     val height = LocalConfiguration.current.screenHeightDp + 150
     val dataStoreViewModel:DataStoreViewModel = hiltViewModel()
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = Color.Blue)
     ) {
@@ -139,17 +141,17 @@ fun SettingScreenUI(
 
                 AccountItems(
                     title = "Address",
-                    subtitle = "",
+                    subtitle = "Manage your shipping locations",
                     imageVector = Icons.Default.LocationOn
-                ){
+                ) {
                     nav.navigate(NavDestinations.AddressScreen)
                 }
-                Spacer(modifier = Modifier.height(12.dp))
+
                 AccountItems(
                     title = "My Order",
-                    subtitle = "",
+                    subtitle = "Check status and history",
                     imageVector = Icons.Default.ShoppingBag
-                ){
+                ) {
                     nav.navigate(NavDestinations.Orders)
                 }
 
@@ -199,39 +201,67 @@ fun SettingScreenUI(
 
 }
 
-
 @Composable
 fun AccountItems(
-    modifier: Modifier = Modifier.fillMaxWidth(),
-    icon: Boolean = false,
     title: String,
-    subtitle: String="",
     imageVector: ImageVector,
-    onClick:()->Unit={}
+    subtitle: String = "",
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
-    Row(modifier = modifier.clickable {
-                   onClick.invoke()
-    }, verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = imageVector,
-            contentDescription = "",
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onBackground
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+    Surface(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp), // Space between items
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), // Subtle tile background
+        tonalElevation = 1.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp), // Internal breathing room
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Icon Container with specialized background
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = imageVector,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
 
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.weight(1f)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Icon(
-            imageVector = Icons.Default.KeyboardDoubleArrowRight,
-            contentDescription = "",
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onBackground
-        )
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                if (subtitle.isNotEmpty()) {
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Icon(
+                imageVector = Icons.Default.KeyboardDoubleArrowRight,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = MaterialTheme.colorScheme.outline
+            )
+        }
     }
 }

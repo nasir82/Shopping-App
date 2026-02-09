@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DeliveryDining
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,17 +24,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.pks.shoppingapp.personalization.orders.domain.model.OrderModel
 
 
 @Composable
-fun OrderScreen(modifier: Modifier = Modifier) {
+fun OrderScreen(nav: NavHostController,modifier: Modifier = Modifier) {
     val viewModel: OrderViewModel = hiltViewModel()
     val state = viewModel.orderState.collectAsState()   .value
     Scaffold(
         topBar = {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier =Modifier.padding(top = 40.dp, bottom = 5.dp, start = 10.dp)) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
+                IconButton(onClick = {
+                    nav.popBackStack()
+                }) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "")
+                }
                 Text(text = "Orders")
             }
         }

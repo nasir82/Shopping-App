@@ -40,7 +40,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pks.shoppingapp.home.domain.model.ProductModel
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 import com.pks.shoppingapp.products.presentation.DetailsViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt

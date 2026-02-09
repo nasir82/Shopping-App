@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.pks.shoppingapp.core.presentation.ResultState
 import com.pks.shoppingapp.personalization.address.domain.model.AddressModel
 import com.pks.shoppingapp.personalization.address.domain.repo.AddressRepo
+import com.pks.shoppingapp.personalization.address.presentation.AddressAddingState
 import com.pks.shoppingapp.personalization.address.presentation.AddressState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -35,10 +36,10 @@ class AddressRepoImpl @Inject constructor(private val db: FirebaseFirestore, pri
         }
     }
 
-    override suspend fun addAddresses(address:AddressModel): Flow<ResultState<AddressState>> =   callbackFlow {
+    override suspend fun addAddresses(address:AddressModel): Flow<ResultState<AddressAddingState>> =   callbackFlow {
         trySend(ResultState.Loading)
         db.collection("Users").document(auth.currentUser!!.uid).collection("Address").document().set(address).addOnSuccessListener {
-            trySend(ResultState.Success(AddressState(isLoading = false )))
+            trySend(ResultState.Success(AddressAddingState(isLoading = false, isSuccess = true )))
         }
             .addOnFailureListener {
                 trySend(ResultState.Error(message = it.message.toString()))

@@ -45,7 +45,7 @@ import coil.request.ImageRequest
 import com.pks.shoppingapp.cart.domain.model.CartModel
 import com.pks.shoppingapp.core.presentation.components.ShoppingButton
 import com.pks.shoppingapp.core.presentation.components.shimmerEffect
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 
 
 @Composable
@@ -79,12 +79,16 @@ fun CartScreenUI(nav:NavHostController, cartViewModel: CartViewModel) {
         )
         Spacer(modifier = Modifier.height(10.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Default.ArrowBackIosNew,
-                contentDescription = "",
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onBackground
-            )
+            IconButton(onClick = {
+                nav.navigate(NavDestinations.AllProductScreen)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBackIosNew,
+                    contentDescription = "",
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
             Spacer(modifier = Modifier.width(1.dp))
             Text(
                 text = "Continue shopping",

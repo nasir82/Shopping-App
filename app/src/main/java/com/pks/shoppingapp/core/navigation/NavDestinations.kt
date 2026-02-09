@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.navigation
+package com.pks.shoppingapp.core.navigation
 
 import kotlinx.serialization.Serializable
 
@@ -63,5 +63,7 @@ sealed class NavDestinations {
     @Serializable
     data object AddressScreen : NavDestinations()
 
+    @Serializable
+    data object AddAddress : NavDestinations()
 
 }

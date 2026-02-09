@@ -44,7 +44,7 @@ import com.pks.shoppingapp.core.presentation.components.DividerWithText
 import com.pks.shoppingapp.core.presentation.components.LoginWithSocialMedia
 import com.pks.shoppingapp.core.presentation.components.ShoppingButton
 import com.pks.shoppingapp.core.presentation.components.ShoppingTextField
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 import kotlinx.coroutines.launch
 
 

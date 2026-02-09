@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -58,9 +59,10 @@ import com.pks.shoppingapp.core.presentation.components.SectionHeading
 import com.pks.shoppingapp.core.presentation.components.shimmerEffect
 import com.pks.shoppingapp.core.utils.ui.LoadingCategory
 import com.pks.shoppingapp.home.domain.model.ProductModel
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 import com.pks.shoppingapp.products.presentation.DetailsViewModel
 import com.pks.shoppingapp.wishlist.utils.DataStoreViewModel
+import java.util.Locale
 
 
 @Composable
@@ -176,7 +178,7 @@ fun HomeScreenUi(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 if(productState.isLoading) LazyRow {
-                    items(5){
+                    items(4){
                         Box (modifier = Modifier.height(150.dp), contentAlignment = Alignment.CenterStart){
                             Box(
                                 modifier = Modifier
@@ -266,7 +268,8 @@ fun ProductCart(product:ProductModel,dataStoreViewModel: DataStoreViewModel? = n
 
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 5.dp)) {
+            .padding(horizontal = 5.dp),
+            verticalArrangement = Arrangement.Center) {
             Spacer(modifier = Modifier.height(5.dp))
             Card(shape = RoundedCornerShape(8.dp), modifier = Modifier .align(alignment = Alignment.CenterHorizontally)) {
                 AsyncImage(
@@ -281,7 +284,7 @@ fun ProductCart(product:ProductModel,dataStoreViewModel: DataStoreViewModel? = n
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = product.title, style = TextStyle(fontWeight = FontWeight.W600, fontSize = 13.sp), maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground)
+            Text(text = product.title.uppercase(Locale.ROOT), style = TextStyle(fontWeight = FontWeight.W600, fontSize = 13.sp), maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onBackground)
             Spacer(modifier = Modifier.height(5.dp))
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(text = product.brand.name,  color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleMedium)

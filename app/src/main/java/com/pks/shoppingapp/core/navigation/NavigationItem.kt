@@ -1,4 +1,4 @@
-package com.pks.shoppingapp.navigation
+package com.pks.shoppingapp.core.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder

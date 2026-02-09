@@ -47,7 +47,7 @@ import com.pks.shoppingapp.cart.presentation.CartViewModel
 import com.pks.shoppingapp.core.presentation.components.ChangePaymentMethod
 import com.pks.shoppingapp.core.presentation.components.SectionHeadingWithComposable
 import com.pks.shoppingapp.core.presentation.components.ShoppingButton
-import com.pks.shoppingapp.navigation.NavDestinations
+import com.pks.shoppingapp.core.navigation.NavDestinations
 import com.pks.shoppingapp.personalization.address.presentation.AddressViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
